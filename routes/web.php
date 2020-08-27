@@ -20,3 +20,6 @@ Route::get('/', function () {
 // Route::resource('students', 'MyController');
 Route::get('/index', 'DatatablesController@index')->name('home');
 Route::get('students', 'DatatablesController@getUsers')->name('get.users');
+Route::get('/students/{id}/edit', 'DatatablesController@edit')->name('student.edit');
+Route::post('/students/add', 'DatatablesController@store')->name('student.add');
+Route::delete('/students/delete/{id}', 'DatatablesController@delete')->name('student.delete');
