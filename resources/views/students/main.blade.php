@@ -22,7 +22,9 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="" method="post">
+          <form id="editModal">
+            @csrf
+            <input type="text" id="id" name="fname" class="form-control" hidden>
               <div class="form-group">
                   <label for="">First Name</label>
                   <input type="text" id="editfname" name="fname" class="form-control">
@@ -31,11 +33,12 @@
                 <label for="">Last Name</label>
                 <input type="text" id="editlname" name="lname" class="form-control">
             </div>
-          </form>
+          
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="submit" id="btnUpdateStudent" class="btn btn-primary">Save changes</button>
+        </form>
         </div>
       </div>
     </div>
@@ -105,10 +108,9 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script type="text/javascript" src="{{ asset('js/custom.js') }}"></script>
 <script>
-
 $(document).ready(function(){
-
     //show DataTables
     $('#myTable').DataTable({
         processing: true,
@@ -123,107 +125,7 @@ $(document).ready(function(){
             { data: 'action', name: 'action'}
         ]
     });
-
-    //show edit modal with data
-    $('body').on('click', '.editbtn', function () {
-        $('#editModal').modal('show');
-
-        var user_id = $(this).data('id');
-        // console.log(user_id);
-        
-        $.get('students/' + user_id + '/edit', function(data){
-            $('#editfname').val(data.fname);
-            $('#editlname').val(data.lname);
-        })
-    });
-
-    //add data
 });
-</script>
-<script>
- function refreshTable() {
-  $('.dataTable').each(function() {
-      dt = $(this).dataTable();
-      dt.fnDraw();
-  })
-}
-</script>
-<script>
-$('#btnAddStudent').click(function(e){
-  e.preventDefault();
-  const Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 2000,
-    timerProgressBar: true,
-    onOpen: (toast) => {
-      toast.addEventListener('mouseenter', Swal.stopTimer)
-      toast.addEventListener('mouseleave', Swal.resumeTimer)
-    }
-  })
-
-
-  var formData = {
-    fname: $('#fname').val(),
-    lname: $('#lname').val()
-  };
-  var url = "/students/add";
-  // console.log(formData);
-
-  $.ajax({
-    method:'POST',
-    data: formData,
-    url: url,
-    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-    success: function(response){
-      $('#addModal').modal('hide');
-      Toast.fire({
-        icon: 'success',
-        title: response.success
-      })
-      $('#formAdd').trigger("reset");
-      refreshTable();
-    },
-    error: function(error){
-      console.log('error');
-    }
-  })
-});
-
-$('body').on('click', '.deletebtn', function(){
-const Toast = Swal.mixin({
-  toast: true,
-  position: 'top-end',
-  showConfirmButton: false,
-  timer: 2000,
-  timerProgressBar: true,
-  onOpen: (toast) => {
-    toast.addEventListener('mouseenter', Swal.stopTimer)
-    toast.addEventListener('mouseleave', Swal.resumeTimer)
-  }
-})
-var stud_id = $(this).data('id');
-// var url = '/students/' + stud_id + '/delete';
-
-$.ajax({
-  method: 'DELETE',
-  url: '/students/delete/'+stud_id,
-  headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-  success: function(response){
-    Toast.fire({
-      icon: 'success',
-      title: response.success
-    })
-    refreshTable();
-  },
-  error: function(error){
-    console.log('null');
-  }
-})
-
-})
-
 </script>
 </body>
 </html>

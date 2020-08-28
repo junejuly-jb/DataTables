@@ -74,4 +74,22 @@ class DatatablesController extends Controller
         ]);
         
     }
+
+    public function update(Request $request, $id){
+
+        if($request->ajax()){
+            $student = Student::find($id);
+
+            $student->id = $student->id;
+            $student->fname = $request->fname;
+            $student->lname = $request->lname;
+    
+            $student->save();
+    
+            return response()->json([
+                'id' => $student,
+                'success' => 'Data updated!'
+            ]);
+        }
+    }
 }

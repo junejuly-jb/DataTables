@@ -23,3 +23,4 @@ Route::get('students', 'DatatablesController@getUsers')->name('get.users');
 Route::get('/students/{id}/edit', 'DatatablesController@edit')->name('student.edit');
 Route::post('/students/add', 'DatatablesController@store')->name('student.add');
 Route::delete('/students/delete/{id}', 'DatatablesController@delete')->name('student.delete');
+Route::put('/students/update/{id}', 'DatatablesController@update');
